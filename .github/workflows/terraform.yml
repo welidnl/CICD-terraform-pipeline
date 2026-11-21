@@ -13,7 +13,7 @@ jobs:
       uses: hashicorp/setup-terraform@v3
 
     - name: TFLint
-      uses: welidnl/cicd-linting@main
+      uses: terraform-linters/setup-tflint@v4
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
