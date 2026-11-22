@@ -2,6 +2,10 @@ name: Terraform CI
 
 on: [push]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -12,7 +16,7 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-          role-to-assume: arn:aws:iam::456203800611:user/welidnl
+          role-to-assume: arn:aws:iam::456203800611:oidc-provider/token.actions.githubusercontent.com
           aws-region: eu-west-2
 
     - name: Setup Terraform
