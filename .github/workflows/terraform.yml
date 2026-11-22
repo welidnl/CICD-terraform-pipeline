@@ -9,20 +9,30 @@ jobs:
     - name: checkout code
       uses: actions/checkout@v7
 
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v3
-
-    - name: TFLint
-      uses: terraform-linters/setup-tflint@v4
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-            tflint_path: .
-            tflint_recurse: true
-            tflint_changed_only: false
-            tflint_extra_options: --output json
-            tflint_enabled_rules:
-              terraform_required_providers
-              terraform_standard_module_structure
-            tflint_disabled_rules:
-              terraform_deprecated_interpolation
+          role-to-assume: arn:aws:iam::456203800611:user/welidnl
+          aws-region: eu-west-2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.11.0"
+
+    - name: Check linting of Terraform files
+      uses: devops-infra/action-tflint@v1.0.5
+
+    - name: Run TFLint
+      run: |
+          tflint --init
+          tflint --recursive --format json
+
+    - name: Terraform init
+      run: terraform init
+
+    - name: Terraform validate
+      run: terraform validate
+
+    - name: Terraform plan
+      run: terraform plan
