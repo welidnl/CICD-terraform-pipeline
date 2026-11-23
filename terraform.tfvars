@@ -1,0 +1,7 @@
+region        = "eu-west-2"
+instance_type = "t3.micro"
+instance_ami  = "ami-0f34a23ccc1ac13d3"
+vpc_cidr      = "10.0.0.0/16"
+subnet_cidr   = "10.0.0.0/24"
+route_cidr    = "0.0.0.0/0"
+availability_zone = "eu-west-2a"
