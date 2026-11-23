@@ -27,10 +27,10 @@ jobs:
     - name: Check linting of Terraform files
       uses: devops-infra/action-tflint@v1.0.5
 
-    - name: Run TFLint
-      run: |
-          tflint --init
-          tflint --recursive --format json
+    # - name: Run TFLint
+    #   run: |
+    #       tflint --init
+    #       tflint --recursive --format json
 
     - name: Terraform init
       run: terraform init
