@@ -39,6 +39,12 @@ The workflow lives at `.github/workflows/terraform.yml` and runs as a single `te
 
 The workflow requests an OIDC token (`id-token: write`) and exchanges it for temporary credentials by assuming the `github-actions-terraform` IAM role in `eu-west-2`. This role needs a trust policy that allows GitHub's OIDC provider to assume it from this repository.
 
+### Remote State (S3 Backend)
+
+Terraform's state file is stored remotely in an **S3 bucket** (`terraform-state-welid`, key `terraform.tfstate`) instead of on the GitHub Actions runner. The runner is destroyed after every run, so without remote state each push would start with no record of existing resources and create duplicates. With the S3 backend, every run reads the current state, works out only what has changed, and saves the updated state back.
+
+The `github-actions-terraform` IAM role has been granted the `AmazonS3fullAccess` permission to allow for this.
+
 ### Infrastructure
 
 | Resource | Purpose |
@@ -90,8 +96,11 @@ http://<instance-public-ip>
 
 ![GitHub Actions run](images/terraform-run.png)
 
-**Infrastructure created in AWS**
+**VPC Routemap**
 
+![VPC Routemap in AWS](images/vpc-routemap.png)
+
+**EC2 Instance**
 ![EC2 instance in AWS](images/ec2-instance.png)
 
 **Web server response**
