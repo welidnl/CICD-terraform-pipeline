@@ -87,7 +87,7 @@ Values are set in `terraform.tfvars`: `region`, `availability_zone`, `instance_t
 Once the workflow succeeds, find the instance's public IP in the AWS console and open it in a browser:
 
 ```text
-http://<instance-public-ip>
+http://http://18.170.227.162/>
 ```
 
 ### Screenshots
