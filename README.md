@@ -67,7 +67,7 @@ The instance's `user_data` script installs `httpd` and serves a page that reads 
 │       └── terraform.yml   # CI/CD workflow
 ├── main.tf                 # EC2 instance and security group
 ├── network.tf              # VPC, subnet, internet gateway, routing
-├── provider.tf             # AWS provider configuration
+├── provider.tf             # AWS provider configuration including S3 backend for remote storage
 ├── variables.tf            # Input variables and outputs
 └── terraform.tfvars        # Variable values
 ```
