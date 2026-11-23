@@ -2,7 +2,7 @@ resource "aws_instance" "ec2_tf" {
   ami                         = var.instance_ami
   instance_type               = var.instance_type
   subnet_id                   = aws_subnet.Public_Subnet.id
-  vpc_security_group_ids      = [aws_security_group.HTTP-access.id]
+  vpc_security_group_ids      = [aws_security_group.HTTP_access.id]
   associate_public_ip_address = true
 
   user_data = <<-EOF
@@ -18,7 +18,7 @@ resource "aws_instance" "ec2_tf" {
 
 resource "aws_security_group" "HTTP_access" {
   name   = "http-sg"
-  vpc_id = aws_vpc.tf-vpc.id
+  vpc_id = aws_vpc.tf_vpc.id
 
   ingress {
     description = "Allow HTTP from anywhere"

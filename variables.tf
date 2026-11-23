@@ -31,5 +31,5 @@ variable "route_cidr" {
 
 output "EC2_ID" {
   description = "The ID of the EC2 Instance"
-  value       = aws_instance.practice-ec2-tf.id
+  value       = aws_instance.ec2_tf.id
 }
