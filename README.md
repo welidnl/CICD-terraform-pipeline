@@ -1,13 +1,13 @@
 ## Terraform CI/CD Pipeline
 
-This project uses GitHub Actions to automatically validate and deploy AWS infrastructure defined with Terraform. It provisions a VPC with a public subnet and an EC2 web server running Apache.
+This project uses GitHub Actions to automatically validate and deploy AWS infrastructure defined with Terraform. It creates a VPC with a public subnet and an EC2 web server running Apache.
 
 ### Pipeline Overview
 
-| Stage | Status | Description |
-|-------|--------|-------------|
-| CI | Present | Lints, validates and plans the Terraform code on every push |
-| CD | Present | Applies the configuration to AWS with `terraform apply` |
+| Stage | Description |
+|-------|--------------|
+| CI | Lints, validates and plans the Terraform code on every push |
+| CD | Applies the configuration to AWS with `terraform apply` |
 
 ### How It Works
 
@@ -37,7 +37,7 @@ The workflow lives at `.github/workflows/terraform.yml` and runs as a single `te
 
 **Authentication (OIDC)**
 
-The workflow requests an OIDC token (`id-token: write`) and exchanges it for temporary credentials by assuming the `github-actions-terraform` IAM role in `eu-west-2`. This role needs a trust policy that allows GitHub's OIDC provider to assume it from this repository.
+Instead of storing AWS passwords in GitHub, the workflow asks AWS for temporary access. It does this by logging in as the `github-actions-terraform` IAM role in `eu-west-2`. The role is set up to trust GitHub, so only this repository can use it.
 
 ### Remote State (S3 Backend)
 
@@ -52,7 +52,7 @@ The `github-actions-terraform` IAM role has been granted the `AmazonS3fullAccess
 | `aws_vpc` | Private network (`10.0.0.0/16`) |
 | `aws_subnet` | Public subnet (`10.0.0.0/24`) in `eu-west-2a` |
 | `aws_internet_gateway` | Gives the VPC internet access |
-| `aws_route_table` + association | Routes outbound traffic from the subnet to the internet gateway |
+| `aws_route_table` | Routes outbound traffic from the subnet to the internet gateway |
 | `aws_security_group` | Allows inbound HTTP (port 80) from anywhere and all outbound traffic |
 | `aws_instance` | `t3.micro` EC2 instance that installs and starts Apache on boot |
 
@@ -87,7 +87,7 @@ Values are set in `terraform.tfvars`: `region`, `availability_zone`, `instance_t
 Once the workflow succeeds, find the instance's public IP in the AWS console and open it in a browser:
 
 ```text
-http://http://18.170.227.162/>
+<//http://18.170.227.162/>
 ```
 
 ### Screenshots
